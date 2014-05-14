@@ -51,7 +51,7 @@ AUTHORS:
 # -- Common --------------------------
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/cangjie \
-	-Wall -Wdeclaration-after-statement \
+	-Wall -Wdeclaration-after-statement -Werror=format-security \
 	$(NULL)
 
 CLEANFILES = \
