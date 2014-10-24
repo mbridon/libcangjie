@@ -9,6 +9,7 @@ libcangjie_la_LDFLAGS = -version-info $(CANGJIE_SO_VERSION)
 libcangjie_la_SOURCES = \
 	$(NULL)
 libcangjie_la_CFLAGS = \
+	-DCANGJIE_COMPILATION \
 	$(glib2_CFLAGS) \
 	$(gom_CFLAGS) \
 	$(NULL)
@@ -17,6 +18,7 @@ libcangjie_la_LIBADD = \
 	$(gom_LIBS) \
 	$(NULL)
 libcangjie_la_include_HEADERS = \
+	cangjie/cangjie.h \
 	$(NULL)
 libcangjie_la_includedir = $(includedir)/cangjie
 
