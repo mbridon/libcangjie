@@ -20,4 +20,6 @@
 #ifndef CANGJIE_H
 #define CANGJIE_H
 
+#include "cangjie-char.h"
+
 #endif
