@@ -54,7 +54,8 @@ CLEANFILES = \
 EXTRA_DIST = \
 	autogen.sh \
 	data/README.table.md \
-	data/table.txt \
+	data/table-cj3.txt \
+	data/table-cj5.txt \
 	INSTALL.md \
 	README.md \
 	$(NULL)
