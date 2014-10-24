@@ -8,5 +8,5 @@ Description: Library implementing the Cangjie input method
 URL: @PACKAGE_URL@
 Version: @PACKAGE_VERSION@
 Cflags: -I${includedir}/cangjie
-Requires: glib-2.0 gobject-2.0
+Requires: glib-2.0 gobject-2.0 gom-1.0
 Libs: -L${libdir} -lcangjie

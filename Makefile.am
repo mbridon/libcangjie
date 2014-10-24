@@ -10,9 +10,11 @@ libcangjie_la_SOURCES = \
 	$(NULL)
 libcangjie_la_CFLAGS = \
 	$(glib2_CFLAGS) \
+	$(gom_CFLAGS) \
 	$(NULL)
 libcangjie_la_LIBADD = \
 	$(glib2_LIBS) \
+	$(gom_LIBS) \
 	$(NULL)
 libcangjie_la_include_HEADERS = \
 	$(NULL)
