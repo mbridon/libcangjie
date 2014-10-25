@@ -26,6 +26,7 @@
 
 #include <glib-object.h>
 #include <gom/gom.h>
+#include "cangjie-enums.h"
 
 G_BEGIN_DECLS
 
@@ -53,22 +54,22 @@ struct _CangjieCharClass
 };
 
 GType            cangjie_char_get_type (void);
-CangjieChar     *cangjie_char_new      (GomRepository *repository,
-                                        gchar         *cjchar,
-                                        gchar         *simpchar,
-                                        gboolean       zh,
-                                        gboolean       big5,
-                                        gboolean       hkscs,
-                                        gboolean       zhuyin,
-                                        gboolean       kanji,
-                                        gboolean       hiragana,
-                                        gboolean       katakana,
-                                        gboolean       punctuation,
-                                        gboolean       symbol,
-                                        gchar         *orientation,
-                                        gchar         *code,
-                                        gchar         *shortcode,
-                                        guint32        frequency);
+CangjieChar     *cangjie_char_new      (GomRepository      *repository,
+                                        gchar              *cjchar,
+                                        gchar              *simpchar,
+                                        gboolean            zh,
+                                        gboolean            big5,
+                                        gboolean            hkscs,
+                                        gboolean            zhuyin,
+                                        gboolean            kanji,
+                                        gboolean            hiragana,
+                                        gboolean            katakana,
+                                        gboolean            punctuation,
+                                        gboolean            symbol,
+                                        CangjieOrientation  orientation,
+                                        gchar              *code,
+                                        gchar              *shortcode,
+                                        guint32             frequency);
 
 G_END_DECLS
 

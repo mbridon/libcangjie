@@ -33,7 +33,7 @@ struct _CangjieCharPrivate
     gboolean katakana;
     gboolean punctuation;
     gboolean symbol;
-    gchar *orientation;
+    CangjieOrientation orientation;
     gchar *code;
     gchar *shortcode;
     guint32 frequency;
@@ -67,22 +67,22 @@ enum {
 static GParamSpec *gParamSpecs [LAST_PROP];
 
 CangjieChar *
-cangjie_char_new (GomRepository *repository,
-                  gchar         *cjchar,
-                  gchar         *simpchar,
-                  gboolean       zh,
-                  gboolean       big5,
-                  gboolean       hkscs,
-                  gboolean       zhuyin,
-                  gboolean       kanji,
-                  gboolean       hiragana,
-                  gboolean       katakana,
-                  gboolean       punctuation,
-                  gboolean       symbol,
-                  gchar         *orientation,
-                  gchar         *code,
-                  gchar         *shortcode,
-                  guint32        frequency)
+cangjie_char_new (GomRepository      *repository,
+                  gchar              *cjchar,
+                  gchar              *simpchar,
+                  gboolean            zh,
+                  gboolean            big5,
+                  gboolean            hkscs,
+                  gboolean            zhuyin,
+                  gboolean            kanji,
+                  gboolean            hiragana,
+                  gboolean            katakana,
+                  gboolean            punctuation,
+                  gboolean            symbol,
+                  CangjieOrientation  orientation,
+                  gchar              *code,
+                  gchar              *shortcode,
+                  guint32             frequency)
 {
     return g_object_new (CANGJIE_TYPE_CHAR, "repository", repository,
                          "cjchar", cjchar, "simpchar", simpchar, "zh", zh,
@@ -167,7 +167,7 @@ cangjie_char_get_property (GObject    *object,
             break;
 
         case PROP_ORIENTATION:
-            g_value_set_string (value, self->priv->orientation);
+            g_value_set_enum (value, self->priv->orientation);
             break;
 
         case PROP_CODE:
@@ -248,8 +248,7 @@ cangjie_char_set_property (GObject      *object,
             break;
 
         case PROP_ORIENTATION:
-            g_free (self->priv->orientation);
-            self->priv->orientation = g_value_dup_string (value);
+            self->priv->orientation = g_value_get_enum (value);
             break;
 
         case PROP_CODE:
@@ -331,9 +330,10 @@ cangjie_char_class_init (CangjieCharClass *klass)
                                   "Whether this is a symbol",
                                   FALSE, G_PARAM_READWRITE);
     gParamSpecs[PROP_ORIENTATION] =
-            g_param_spec_string ("orientation", "Orientation",
-                                 "The orientation of the character",
-                                 NULL, G_PARAM_READWRITE);
+            g_param_spec_enum ("orientation", "Orientation",
+                               "The orientation of the character",
+                               CANGJIE_TYPE_ORIENTATION,
+                               CANGJIE_ORIENTATION_BOTH, G_PARAM_READWRITE);
     gParamSpecs[PROP_CODE] =
             g_param_spec_string ("code", "Code",
                                  "The Cangjie code of the character",
