@@ -8,6 +8,7 @@ lib_LTLIBRARIES = libcangjie.la
 libcangjie_la_LDFLAGS = -version-info $(CANGJIE_SO_VERSION)
 libcangjie_la_SOURCES = \
 	cangjie/cangjie-char.c \
+	cangjie/cangjie-enums.c \
 	$(NULL)
 libcangjie_la_CFLAGS = \
 	-DCANGJIE_COMPILATION \
@@ -21,6 +22,7 @@ libcangjie_la_LIBADD = \
 libcangjie_la_include_HEADERS = \
 	cangjie/cangjie.h \
 	cangjie/cangjie-char.h \
+	cangjie/cangjie-enums.h \
 	$(NULL)
 libcangjie_la_includedir = $(includedir)/cangjie
 

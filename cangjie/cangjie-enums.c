@@ -1,4 +1,4 @@
-/* Copyright (c) 2014 - The libcangjie authors.
+/* Copyright (c) 2013-2014 - The libcangjie authors.
  *
  * This file is part of libcangjie.
  *
@@ -17,10 +17,23 @@
  */
 
 
-#ifndef CANGJIE_H
-#define CANGJIE_H
-
-#include "cangjie-char.h"
 #include "cangjie-enums.h"
 
-#endif
+
+static const GEnumValue _cangjie_orientation_values[] = {
+  { CANGJIE_ORIENTATION_HORIZONTAL, "CANGJIE_ORIENTATION_HORIZONTAL", "H" },
+  { CANGJIE_ORIENTATION_VERTICAL, "CANGJIE_ORIENTATION_VERTICAL", "V" },
+  { CANGJIE_ORIENTATION_BOTH, "CANGJIE_ORIENTATION_BOTH", "" },
+  { 0, NULL, NULL }
+};
+
+GType
+cangjie_orientation_get_type (void)
+{
+  static GType type = 0;
+
+  if (!type)
+    type = g_enum_register_static ("CangjieOrientation", _cangjie_orientation_values);
+
+  return type;
+}

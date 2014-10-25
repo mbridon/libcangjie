@@ -17,10 +17,27 @@
  */
 
 
-#ifndef CANGJIE_H
-#define CANGJIE_H
+/* inclusion guard */
+#ifndef CANGJIE_ENUMS_H
+#define CANGJIE_ENUMS_H
 
-#include "cangjie-char.h"
-#include "cangjie-enums.h"
+#if !defined (CANGJIE_H) && !defined (CANGJIE_COMPILATION)
+#error "Only <cangjie.h> can be included directly."
+#endif
+
+#include <glib-object.h>
+
+G_BEGIN_DECLS
+
+typedef enum {
+    CANGJIE_ORIENTATION_HORIZONTAL = 0,
+    CANGJIE_ORIENTATION_VERTICAL = 1,
+    CANGJIE_ORIENTATION_BOTH = 2,
+} CangjieOrientation;
+
+#define CANGJIE_TYPE_ORIENTATION cangjie_orientation_get_type ()
+GType cangjie_orientation_get_type (void);
+
+G_END_DECLS
 
 #endif
