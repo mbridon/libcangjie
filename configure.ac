@@ -4,7 +4,7 @@ AC_INIT([libcangjie], [2.0], [https://github.com/Cangjians/libcangjie/issues], [
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz tar-ustar foreign])
+AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz tar-ustar foreign subdir-objects])
 AC_PROG_MKDIR_P
 
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])

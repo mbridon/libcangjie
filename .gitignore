@@ -1,5 +1,6 @@
 # -- Autotools stuff -----------------
 .deps
+.dirstamp
 .libs
 aclocal.m4
 autom4te.cache/
