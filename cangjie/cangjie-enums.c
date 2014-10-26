@@ -37,3 +37,21 @@ cangjie_orientation_get_type (void)
 
   return type;
 }
+
+
+static const GEnumValue _cangjie_version_values[] = {
+  { CANGJIE_VERSION_3, "CANGJIE_VERSION_3", "cj3" },
+  { CANGJIE_VERSION_5, "CANGJIE_VERSION_5", "cj5" },
+  { 0, NULL, NULL }
+};
+
+GType
+cangjie_version_get_type (void)
+{
+  static GType type = 0;
+
+  if (!type)
+    type = g_enum_register_static ("CangjieVersion", _cangjie_version_values);
+
+  return type;
+}

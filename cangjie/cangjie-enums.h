@@ -38,6 +38,15 @@ typedef enum {
 #define CANGJIE_TYPE_ORIENTATION cangjie_orientation_get_type ()
 GType cangjie_orientation_get_type (void);
 
+
+typedef enum {
+    CANGJIE_VERSION_3 = 3,
+    CANGJIE_VERSION_5 = 5,
+} CangjieVersion;
+
+#define CANGJIE_TYPE_VERSION cangjie_version_get_type ()
+GType cangjie_version_get_type (void);
+
 G_END_DECLS
 
 #endif
