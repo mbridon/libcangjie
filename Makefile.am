@@ -35,7 +35,11 @@ pkgconfigdir = $(libdir)/pkgconfig
 # -- Unit tests ----------------------
 noinst_PROGRAMS = $(TEST_PROGS)
 TEST_PROGS = \
+	tests/cangjie-char \
 	$(NULL)
+
+tests_cangjie_char_CFLAGS = $(glib2_CFLAGS) $(gom_CFLAGS)
+tests_cangjie_char_LDADD = libcangjie.la $(glib2_LIBS) $(gom_LIBS)
 
 check-local: $(TEST_PROGS)
 	$(GTESTER) --verbose $(TEST_PROGS)
