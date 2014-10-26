@@ -75,7 +75,8 @@ test_new_cangjie_char (void)
     /* Insert a CangjieChar */
     c = cangjie_char_new (repository, "來", "来", TRUE, TRUE, FALSE, FALSE,
                           TRUE, FALSE, FALSE, FALSE, FALSE,
-                          CANGJIE_ORIENTATION_BOTH, "foo", "", 22059);
+                          CANGJIE_ORIENTATION_BOTH, CANGJIE_VERSION_3, "foo",
+                          "", 22059);
     gom_resource_save_sync (GOM_RESOURCE (c), &error);
     g_assert_no_error (error);
     g_object_unref (c);
@@ -130,6 +131,9 @@ test_new_cangjie_char (void)
 
     g_object_get (c, "orientation", &i, NULL);
     g_assert_cmpuint (i, ==, CANGJIE_ORIENTATION_BOTH);
+
+    g_object_get (c, "version", &i, NULL);
+    g_assert_cmpuint (i, ==, CANGJIE_VERSION_3);
 
     g_object_get (c, "code", &str, NULL);
     g_assert_cmpstr (str, == , "foo");

@@ -67,6 +67,7 @@ CangjieChar     *cangjie_char_new      (GomRepository      *repository,
                                         gboolean            punctuation,
                                         gboolean            symbol,
                                         CangjieOrientation  orientation,
+                                        CangjieVersion      version,
                                         gchar              *code,
                                         gchar              *shortcode,
                                         guint32             frequency);
