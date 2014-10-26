@@ -27,6 +27,16 @@ libcangjie_la_include_HEADERS = \
 libcangjie_la_includedir = $(includedir)/cangjie
 
 
+# -- Tools ---------------------------
+bin_PROGRAMS = \
+	bin/libcangjie_dbbuilder \
+	$(NULL)
+
+bin_libcangjie_dbbuilder_SOURCES = tools/dbbuilder.c
+bin_libcangjie_dbbuilder_CFLAGS = $(glib2_CFLAGS) $(gio_CFLAGS) $(gom_CFLAGS)
+bin_libcangjie_dbbuilder_LDADD = libcangjie.la $(glib2_LIBS) $(gio_LIBS) $(gom_LIBS)
+
+
 # -- Data ----------------------------
 pkgconfig_DATA = data/cangjie.pc
 pkgconfigdir = $(libdir)/pkgconfig
