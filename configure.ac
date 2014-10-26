@@ -15,6 +15,9 @@ LT_INIT([disable-static])
 PKG_CHECK_MODULES(glib2, [glib-2.0 gobject-2.0])
 PKG_CHECK_MODULES(gom, [gom-1.0])
 
+AC_PATH_PROG(GTESTER, gtester)
+AS_IF([test "x$GTESTER" = "x"], [AC_MSG_ERROR("Could not find gtester")])
+
 # Define these substitions here to keep all version information in one place.
 # For information on how to properly maintain the library version information,
 # refer to the libtool manual, section "Updating library version information":

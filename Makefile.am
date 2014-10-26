@@ -32,6 +32,15 @@ pkgconfig_DATA = data/cangjie.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
 
+# -- Unit tests ----------------------
+noinst_PROGRAMS = $(TEST_PROGS)
+TEST_PROGS = \
+	$(NULL)
+
+check-local: $(TEST_PROGS)
+	$(GTESTER) --verbose $(TEST_PROGS)
+
+
 # -- Misc ----------------------------
 AUTHORS:
 	@if test -d "$(srcdir)/.git"; then \
