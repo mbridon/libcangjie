@@ -54,10 +54,14 @@ pkgconfigdir = $(libdir)/pkgconfig
 noinst_PROGRAMS = $(TEST_PROGS)
 TEST_PROGS = \
 	tests/cangjie-char \
+	tests/db-integrity \
 	$(NULL)
 
 tests_cangjie_char_CFLAGS = $(glib2_CFLAGS) $(gom_CFLAGS)
 tests_cangjie_char_LDADD = libcangjie.la $(glib2_LIBS) $(gom_LIBS)
+
+tests_db_integrity_CFLAGS = $(glib2_CFLAGS) $(gom_CFLAGS) -DCANGJIE_DB_PATH='"$(abs_builddir)/data/cangjie.db"'
+tests_db_integrity_LDADD = libcangjie.la $(glib2_LIBS) $(gom_LIBS)
 
 check-local: $(TEST_PROGS)
 	$(GTESTER) --verbose $(TEST_PROGS)
