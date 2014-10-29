@@ -45,6 +45,8 @@ create_db (gchar *dburi)
     GList *obj_types;
     GError *error = NULL;
 
+    GTimer *timer = g_timer_new ();
+
     /* Connect to the DB */
     adapter = gom_adapter_new ();
     gom_adapter_open_sync (adapter, dburi, &error);
@@ -55,6 +57,9 @@ create_db (gchar *dburi)
     obj_types = g_list_prepend (NULL, GINT_TO_POINTER (CANGJIE_TYPE_CHAR));
     gom_repository_automatic_migrate_sync (repository, 1, obj_types, &error);
     g_assert_no_error (error);
+
+    g_print ("Time taken to create the database: %f seconds\n", g_timer_elapsed (timer, NULL));
+    g_timer_destroy (timer);
 }
 
 
@@ -135,6 +140,7 @@ main (gint argc, gchar **argv)
     CangjieVersion version;
 
     GError *error = NULL;
+    GTimer *timer = g_timer_new ();
 
     if (argc < 3) {
         usage (argv[0]);
@@ -177,6 +183,8 @@ main (gint argc, gchar **argv)
 
         table = g_data_input_stream_new (G_INPUT_STREAM (stream));
 
+        g_timer_reset (timer);
+
         while (TRUE) {
             linenum += 1;
             line = g_data_input_stream_read_line_utf8 (table, &length, NULL, &error);
@@ -209,10 +217,14 @@ main (gint argc, gchar **argv)
             g_free (line);
         }
 
+        g_print ("Time taken to parse %s: %f seconds\n", tablepath, g_timer_elapsed (timer, NULL));
+
         g_object_unref (table);
         g_object_unref (stream);
         g_object_unref (tablefile);
     }
+
+    g_timer_reset (timer);
 
     gom_adapter_close_sync (adapter, &error);
 
@@ -225,6 +237,9 @@ main (gint argc, gchar **argv)
 
     g_object_unref (repository);
     g_object_unref (adapter);
+
+    g_print ("Time taken to close the DB: %f seconds\n", g_timer_elapsed (timer, NULL));
+    g_timer_destroy (timer);
 
     return ret;
 }
