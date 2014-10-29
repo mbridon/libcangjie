@@ -30,6 +30,7 @@
 
 static GomAdapter *adapter;
 static GomRepository *repository;
+static GomResourceGroup *group;
 
 
 void
@@ -97,8 +98,6 @@ parse_and_insert_line (const gchar *line, CangjieVersion version)
     gchar *shortcode = tokens[13];
     guint frequency = atoi (tokens[14]);
 
-    GError *err = NULL;
-
     CangjieChar *c;
 
     if ((g_strcmp0 (code, "") == 0) && (g_strcmp0 (shortcode, "") == 0)) {
@@ -111,8 +110,7 @@ parse_and_insert_line (const gchar *line, CangjieVersion version)
                           symbol, orientation, version, code, shortcode,
                           frequency);
 
-    /* TODO: Save them all at once in a transaction */
-    gom_resource_save_sync (GOM_RESOURCE (c), &err);
+    gom_resource_group_append (group, GOM_RESOURCE (c));
 
     g_object_unref (c);
     g_strfreev (tokens);
@@ -161,6 +159,8 @@ main (gint argc, gchar **argv)
     }
 
     create_db (dbpath);
+
+    group = gom_resource_group_new (repository);
 
     for (i = 2; i < argc; i++) {
         tablepath = argv[i];
@@ -224,6 +224,18 @@ main (gint argc, gchar **argv)
         g_object_unref (tablefile);
     }
 
+    g_timer_reset (timer);
+
+    gom_resource_group_write_sync (group, &error);
+
+    if (error != NULL) {
+        ret = error->code;
+        g_print ("%s: Error writing to the database: %s\n", argv[0],
+                 error->message);
+        g_error_free (error);
+    }
+
+    g_print ("Time taken to write to the DB: %f seconds\n", g_timer_elapsed (timer, NULL));
     g_timer_reset (timer);
 
     gom_adapter_close_sync (adapter, &error);
