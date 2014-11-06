@@ -41,7 +41,7 @@ usage (gchar *progname)
 
 
 void
-create_db (gchar *dburi)
+create_db (const gchar *dburi)
 {
     GList *obj_types;
     GError *error = NULL;
@@ -123,10 +123,10 @@ main (gint argc, gchar **argv)
 {
     gint ret = 0;
 
-    gchar *dbpath;
+    const gchar *dbpath;
 
     gint i;
-    gchar *tablepath;
+    const gchar *tablepath;
     GFile *tablefile;
     GFileInputStream *stream;
     GDataInputStream *table;
