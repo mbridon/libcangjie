@@ -174,7 +174,7 @@ main (gint argc, gchar **argv)
 
         if (error != NULL) {
             ret = error->code;
-            g_print ("%s: Cannot read %s: %s\n", argv[0], tablepath,
+            g_print ("%s: Cannot read %s: %s\n", g_get_prgname(), tablepath,
                      error->message);
             g_error_free (error);
             g_object_unref (tablefile);
@@ -191,7 +191,7 @@ main (gint argc, gchar **argv)
 
             if (error != NULL) {
                 ret = error->code;
-                g_print ("%s: Error reading line %d: %s\n", argv[0], linenum,
+                g_print ("%s: Error reading line %d: %s\n", g_get_prgname (), linenum,
                          error->message);
                 g_error_free (error);
                 g_free (line);
@@ -230,8 +230,8 @@ main (gint argc, gchar **argv)
 
     if (error != NULL) {
         ret = error->code;
-        g_print ("%s: Error writing to the database: %s\n", argv[0],
-                 error->message);
+        g_warning ("%s: Error writing to the database: %s\n", g_get_prgname (),
+                   error->message);
         g_error_free (error);
     }
 
@@ -242,8 +242,8 @@ main (gint argc, gchar **argv)
 
     if (error != NULL) {
         ret = error->code;
-        g_print ("%s: Error closing the connection to the database: %s\n",
-                 argv[0], error->message);
+        g_warning ("%s: Error closing the connection to the database: %s",
+                   g_get_prgname (), error->message);
         g_error_free (error);
     }
 
