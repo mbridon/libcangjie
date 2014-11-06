@@ -31,7 +31,15 @@
 static GomAdapter *adapter;
 static GomRepository *repository;
 static GomResourceGroup *group;
+static int num_pending_ops = 0;
 
+#define BATCH_SIZE 100
+
+typedef struct {
+    const char *dbpath;
+    const char **inputs;
+    GMainLoop *loop;
+} BuilderData;
 
 void
 usage (gchar *progname)
@@ -39,6 +47,23 @@ usage (gchar *progname)
     g_print ("Usage: %s RESULTDB SOURCEFILE [SOURCEFILE ...]\n", progname);
 }
 
+static void
+write_cb (GObject      *source_object,
+	  GAsyncResult *res,
+	  gpointer      user_data)
+{
+    GError *error = NULL;
+
+    if (!gom_resource_group_write_finish (GOM_RESOURCE_GROUP (source_object), res, &error)) {
+        g_warning ("%s: Error writing to the database: %s", g_get_prgname (),
+                   error->message);
+        g_error_free (error);
+    }
+    if (g_atomic_int_dec_and_test (&num_pending_ops)) {
+        g_print ("All done, exiting\n");
+        g_main_loop_quit (user_data);
+    }
+}
 
 void
 create_db (const gchar *dburi)
@@ -117,13 +142,11 @@ parse_and_insert_line (const gchar *line, CangjieVersion version)
     g_type_class_unref (orientation_class);
 }
 
-
-int
-main (gint argc, gchar **argv)
+static gboolean
+generate_db (gpointer user_data)
 {
+    BuilderData *data = user_data;
     gint ret = 0;
-
-    const gchar *dbpath;
 
     gint i;
     const gchar *tablepath;
@@ -139,31 +162,14 @@ main (gint argc, gchar **argv)
 
     GError *error = NULL;
     GTimer *timer = g_timer_new ();
+    guint num_items = 0;
 
-    if (argc < 3) {
-        usage (argv[0]);
-        return -1;
-    }
-
-    /* Hard-code a UTF-8 locale.
-     *
-     * Our source data actually **is** in UTF-8, and the printing here is only
-     * for debugging purpose. Also, there is no need for i18n of this tool.
-     */
-    setlocale (LC_ALL, "en_US.utf8");
-
-    dbpath = argv[1];
-    if (g_file_test (dbpath, G_FILE_TEST_EXISTS)) {
-        g_print ("DB file already exists: %s\n", dbpath);
-        return 1;
-    }
-
-    create_db (dbpath);
+    create_db (data->dbpath);
 
     group = gom_resource_group_new (repository);
 
-    for (i = 2; i < argc; i++) {
-        tablepath = argv[i];
+    for (i = 0; data->inputs[i] != NULL; i++) {
+        tablepath = data->inputs[i];
         tablefile = g_file_new_for_path (tablepath);
 
         nick = get_version_nick (tablefile);
@@ -213,6 +219,16 @@ main (gint argc, gchar **argv)
             }
 
             parse_and_insert_line (line, version);
+            num_items++;
+            if (num_items == BATCH_SIZE) {
+                g_atomic_int_inc (&num_pending_ops);
+                gom_resource_group_write_async (group, write_cb, data->loop);
+                g_object_unref (group);
+                group = gom_resource_group_new (repository);
+
+
+                num_items = 0;
+            }
 
             g_free (line);
         }
@@ -224,34 +240,54 @@ main (gint argc, gchar **argv)
         g_object_unref (tablefile);
     }
 
-    g_timer_reset (timer);
+    /* Write the last batch */
+    g_atomic_int_inc (&num_pending_ops);
+    gom_resource_group_write_async (group, write_cb, data->loop);
+    g_object_unref (group);
 
-    gom_resource_group_write_sync (group, &error);
+    return G_SOURCE_REMOVE;
+}
 
-    if (error != NULL) {
-        ret = error->code;
-        g_warning ("%s: Error writing to the database: %s\n", g_get_prgname (),
-                   error->message);
-        g_error_free (error);
+int main (int argc, char **argv)
+{
+    BuilderData data;
+    GError *error = NULL;
+
+    /* Hard-code a UTF-8 locale.
+     *
+     * Our source data actually **is** in UTF-8, and the printing here is only
+     * for debugging purpose. Also, there is no need for i18n of this tool.
+     */
+    setlocale (LC_ALL, "en_US.utf8");
+
+    if (argc < 3) {
+        usage (argv[0]);
+        return -1;
     }
 
-    g_print ("Time taken to write to the DB: %f seconds\n", g_timer_elapsed (timer, NULL));
-    g_timer_reset (timer);
+    data.dbpath = argv[1];
+    if (g_file_test (data.dbpath, G_FILE_TEST_EXISTS)) {
+        g_print ("DB file already exists: %s\n", data.dbpath);
+        return 1;
+    }
+    data.inputs = (const char **) &argv[2];
+    data.loop = g_main_loop_new (NULL, TRUE);
+
+    g_idle_add (generate_db, &data);
+
+    g_main_loop_run (data.loop);
 
     gom_adapter_close_sync (adapter, &error);
 
     if (error != NULL) {
-        ret = error->code;
         g_warning ("%s: Error closing the connection to the database: %s",
                    g_get_prgname (), error->message);
         g_error_free (error);
+        return 1;
     }
 
     g_object_unref (repository);
     g_object_unref (adapter);
 
-    g_print ("Time taken to close the DB: %f seconds\n", g_timer_elapsed (timer, NULL));
-    g_timer_destroy (timer);
-
-    return ret;
+    return 0;
 }
