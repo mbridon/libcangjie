@@ -247,6 +247,7 @@ int main (int argc, char **argv)
 {
     BuilderData data;
     GError *error = NULL;
+    GTimer *timer = g_timer_new ();
 
     /* Hard-code a UTF-8 locale.
      *
@@ -283,6 +284,8 @@ int main (int argc, char **argv)
 
     g_object_unref (repository);
     g_object_unref (adapter);
+
+    g_print ("Total time taken: %f seconds\n", g_timer_elapsed (timer, NULL));
 
     return 0;
 }
