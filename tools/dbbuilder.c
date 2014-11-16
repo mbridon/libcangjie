@@ -71,8 +71,6 @@ create_db (const gchar *dburi)
     GList *obj_types;
     GError *error = NULL;
 
-    GTimer *timer = g_timer_new ();
-
     /* Connect to the DB */
     adapter = gom_adapter_new ();
     gom_adapter_open_sync (adapter, dburi, &error);
@@ -83,9 +81,6 @@ create_db (const gchar *dburi)
     obj_types = g_list_prepend (NULL, GINT_TO_POINTER (CANGJIE_TYPE_CHAR));
     gom_repository_automatic_migrate_sync (repository, 1, obj_types, &error);
     g_assert_no_error (error);
-
-    g_print ("Time taken to create the database: %f seconds\n", g_timer_elapsed (timer, NULL));
-    g_timer_destroy (timer);
 }
 
 
