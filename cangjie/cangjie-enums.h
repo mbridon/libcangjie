@@ -32,7 +32,7 @@ G_BEGIN_DECLS
 typedef enum {
     CANGJIE_ORIENTATION_HORIZONTAL = 0,
     CANGJIE_ORIENTATION_VERTICAL = 1,
-    CANGJIE_ORIENTATION_BOTH = 2,
+    CANGJIE_ORIENTATION_BOTH = 2
 } CangjieOrientation;
 
 #define CANGJIE_TYPE_ORIENTATION cangjie_orientation_get_type ()
@@ -41,7 +41,7 @@ GType cangjie_orientation_get_type (void);
 
 typedef enum {
     CANGJIE_VERSION_3 = 3,
-    CANGJIE_VERSION_5 = 5,
+    CANGJIE_VERSION_5 = 5
 } CangjieVersion;
 
 #define CANGJIE_TYPE_VERSION cangjie_version_get_type ()
