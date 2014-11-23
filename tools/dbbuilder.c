@@ -175,8 +175,8 @@ generate_db (gpointer user_data)
 
         if (error != NULL) {
             ret = error->code;
-            g_print ("%s: Cannot read %s: %s\n", g_get_prgname(), tablepath,
-                     error->message);
+            g_warning ("%s: Cannot read %s: %s\n", g_get_prgname(), tablepath,
+                       error->message);
             g_error_free (error);
             g_object_unref (tablefile);
             return ret;
@@ -192,8 +192,8 @@ generate_db (gpointer user_data)
 
             if (error != NULL) {
                 ret = error->code;
-                g_print ("%s: Error reading line %d: %s\n", g_get_prgname (), linenum,
-                         error->message);
+                g_warning ("%s: Error reading line %d: %s\n", g_get_prgname (), linenum,
+                           error->message);
                 g_error_free (error);
                 g_free (line);
                 g_object_unref (table);
@@ -263,7 +263,7 @@ int main (int argc, char **argv)
 
     data.dbpath = argv[1];
     if (g_file_test (data.dbpath, G_FILE_TEST_EXISTS)) {
-        g_print ("DB file already exists: %s\n", data.dbpath);
+        g_warning ("DB file already exists: %s\n", data.dbpath);
         return 1;
     }
     data.inputs = (const char **) &argv[2];
