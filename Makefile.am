@@ -40,8 +40,8 @@ bin_libcangjie_dbbuilder_LDADD = libcangjie.la $(glib2_LIBS) $(gio_LIBS) $(gom_L
 # -- Data ----------------------------
 data/cangjie.db: bin/libcangjie_dbbuilder data/table-cj3.txt data/table-cj5.txt
 	$(AM_V_GEN) rm -f $@; \
-	$(MKDIR_P) data; \
-	$(builddir)/bin/libcangjie_dbbuilder $@ data/table-cj3.txt data/table-cj5.txt >/dev/null
+	$(MKDIR_P) $(builddir)/data; \
+	$(builddir)/bin/libcangjie_dbbuilder $@ $(srcdir)/data/table-cj3.txt $(srcdir)/data/table-cj5.txt >/dev/null
 
 libcangjie_data_DATA = data/cangjie.db
 libcangjie_datadir = $(pkgdatadir)
@@ -91,6 +91,7 @@ AM_CPPFLAGS = \
 
 CLEANFILES = \
 	AUTHORS \
+	data/cangjie.db \
 	data/cangjie.pc \
 	$(NULL)
 
