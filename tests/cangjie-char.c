@@ -92,6 +92,7 @@ test_new_cangjie_char (void)
                                                     filter, &error));
     g_assert_no_error (error);
     g_assert (c);
+    g_object_unref (filter);
 
     /* And check its properties */
     g_object_get (c, "cjchar", &str, NULL);
@@ -137,9 +138,11 @@ test_new_cangjie_char (void)
 
     g_object_get (c, "code", &str, NULL);
     g_assert_cmpstr (str, == , "foo");
+    g_free (str);
 
     g_object_get (c, "shortcode", &str, NULL);
     g_assert_cmpstr (str, ==, "");
+    g_free (str);
 
     g_object_get (c, "frequency", &i, NULL);
     g_assert_cmpuint (i, ==, 22059);

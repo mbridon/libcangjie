@@ -90,6 +90,11 @@ assert_cangjie_char_equal (CangjieChar *c1, CangjieChar *c2)
         (hiragana1 == hiragana2) && (katakana1 == katakana2) && \
         (punctuation1 == punctuation2) && (symbol1 == symbol2) && \
         (orientation1 == orientation2)) {
+        g_free (cjchar1);
+        g_free (simpchar1);
+        g_free (cjchar2);
+        g_free (simpchar2);
+
         return;
     }
 
@@ -118,7 +123,7 @@ test_db_integrity (void)
     CangjieChar *c = NULL;
     gchar *cjchar;
 
-    GHashTable *seen_chars = g_hash_table_new (g_str_hash, g_str_equal);
+    GHashTable *seen_chars = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
     CangjieChar *other;
 
     GError *error;
@@ -148,6 +153,8 @@ test_db_integrity (void)
         } else {
             assert_cangjie_char_equal (c, other);
         }
+
+        g_free (cjchar);
     }
 
     g_object_unref (group);
