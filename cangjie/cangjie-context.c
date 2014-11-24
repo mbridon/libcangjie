@@ -67,6 +67,7 @@ cangjie_context_finalize (GObject *object)
 void
 cangjie_context_reset_filter (CangjieContext *self)
 {
+    GomFilter *version_filter, *orientation_filter;
     GValue value = { 0, };
 
     if (self->priv->filter != NULL) {
@@ -76,8 +77,25 @@ cangjie_context_reset_filter (CangjieContext *self)
     /* Version filter */
     g_value_init (&value, CANGJIE_TYPE_VERSION);
     g_value_set_enum (&value, self->priv->version);
-    self->priv->filter = gom_filter_new_eq (CANGJIE_TYPE_CHAR, "version", &value);
+    version_filter = gom_filter_new_eq (CANGJIE_TYPE_CHAR, "version", &value);
     g_value_unset (&value);
+
+    /* Orientation filter */
+    g_value_init (&value, CANGJIE_TYPE_ORIENTATION);
+    if (self->priv->orientation == CANGJIE_ORIENTATION_HORIZONTAL) {
+        /* We want everything that IS NOT vertical-only */
+        g_value_set_enum (&value, CANGJIE_ORIENTATION_VERTICAL);
+    } else {
+        /* We want everything that IS NOT horizontal-only */
+        g_value_set_enum (&value, CANGJIE_ORIENTATION_HORIZONTAL);
+    }
+    orientation_filter = gom_filter_new_neq (CANGJIE_TYPE_CHAR, "orientation", &value);
+    g_value_unset (&value);
+
+    /* The whole filter */
+    self->priv->filter = gom_filter_new_and (version_filter, orientation_filter);
+    g_object_unref (version_filter);
+    g_object_unref (orientation_filter);
 }
 
 static void
@@ -132,6 +150,7 @@ cangjie_context_set_property (GObject      *object,
             }
 
             self->priv->orientation = orientation;
+            cangjie_context_reset_filter (self);
             break;
 
         case PROP_CHAR_FAMILIES:
