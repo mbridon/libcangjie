@@ -23,5 +23,6 @@
 #include "cangjie-char.h"
 #include "cangjie-context.h"
 #include "cangjie-enums.h"
+#include "cangjie-flags.h"
 
 #endif

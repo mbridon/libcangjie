@@ -10,6 +10,7 @@ libcangjie_la_SOURCES = \
 	cangjie/cangjie-char.c \
 	cangjie/cangjie-context.c \
 	cangjie/cangjie-enums.c \
+	cangjie/cangjie-flags.c \
 	$(NULL)
 libcangjie_la_CFLAGS = \
 	-DCANGJIE_COMPILATION \
@@ -25,6 +26,7 @@ libcangjie_la_include_HEADERS = \
 	cangjie/cangjie-char.h \
 	cangjie/cangjie-context.h \
 	cangjie/cangjie-enums.h \
+	cangjie/cangjie-flags.h \
 	$(NULL)
 libcangjie_la_includedir = $(includedir)/cangjie
 
