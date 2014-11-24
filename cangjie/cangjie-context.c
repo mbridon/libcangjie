@@ -95,6 +95,7 @@ cangjie_context_set_property (GObject      *object,
                               GParamSpec   *pspec)
 {
     CangjieContext *self = CANGJIE_CONTEXT (object);
+    guint32 orientation;
 
     switch (prop_id)
     {
@@ -103,7 +104,14 @@ cangjie_context_set_property (GObject      *object,
             break;
 
         case PROP_ORIENTATION:
-            self->priv->orientation = g_value_get_enum (value);
+            orientation = g_value_get_enum (value);
+
+            if (orientation == CANGJIE_ORIENTATION_BOTH) {
+                g_error ("CANGJIE_ORIENTATION_BOTH is not a valid orientation"
+                         " value for a CangjieContext");
+            }
+
+            self->priv->orientation = orientation;
             break;
 
         case PROP_CHAR_FAMILIES:
