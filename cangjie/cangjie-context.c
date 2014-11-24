@@ -64,10 +64,43 @@ cangjie_context_finalize (GObject *object)
     G_OBJECT_CLASS (cangjie_context_parent_class)->finalize (object);
 }
 
+GomFilter *
+cangjie_context_get_char_family_filter_or (CangjieContext *self,
+                                             const gchar    *flag_nick,
+                                             GomFilter      *current_filter)
+{
+    GomFilter *result_filter, *filter_eq;
+    GValue value = { 0, };
+    GFlagsClass *family_class = g_type_class_ref (CANGJIE_TYPE_CHAR_FAMILY_FLAGS);
+    CangjieCharFamilyFlags flag_value =
+            g_flags_get_value_by_nick (family_class, flag_nick)->value;
+
+    if (self->priv->char_families & flag_value) {
+        g_value_init (&value, G_TYPE_BOOLEAN);
+        g_value_set_boolean (&value, TRUE);
+
+        if (current_filter == NULL) {
+            result_filter = gom_filter_new_eq (CANGJIE_TYPE_CHAR, flag_nick, &value);
+        } else {
+            filter_eq = gom_filter_new_eq (CANGJIE_TYPE_CHAR, flag_nick, &value);
+            result_filter = gom_filter_new_or (current_filter, filter_eq);
+            g_object_unref (filter_eq);
+            g_object_unref (current_filter);
+        }
+
+        g_value_unset (&value);
+
+        return result_filter;
+    }
+
+    return current_filter;
+}
+
 void
 cangjie_context_reset_filter (CangjieContext *self)
 {
-    GomFilter *version_filter, *orientation_filter;
+    GomFilter *version_filter, *orientation_filter, *v_and_o_filter;
+    GomFilter *family_filter = NULL;
     GValue value = { 0, };
 
     if (self->priv->filter != NULL) {
@@ -92,10 +125,42 @@ cangjie_context_reset_filter (CangjieContext *self)
     orientation_filter = gom_filter_new_neq (CANGJIE_TYPE_CHAR, "orientation", &value);
     g_value_unset (&value);
 
-    /* The whole filter */
-    self->priv->filter = gom_filter_new_and (version_filter, orientation_filter);
+    if (self->priv->char_families == CANGJIE_CHAR_FAMILY_ALL) {
+        /* Don't bother with a family filter */
+        self->priv->filter = gom_filter_new_and (version_filter, orientation_filter);
+        g_object_unref (version_filter);
+        g_object_unref (orientation_filter);
+        return;
+    }
+
+    v_and_o_filter = gom_filter_new_and (version_filter, orientation_filter);
     g_object_unref (version_filter);
     g_object_unref (orientation_filter);
+
+    /* Family filter */
+    family_filter = cangjie_context_get_char_family_filter_or (self, "zh",
+                                                               family_filter);
+    family_filter = cangjie_context_get_char_family_filter_or (self, "big5",
+                                                               family_filter);
+    family_filter = cangjie_context_get_char_family_filter_or (self, "hkscs",
+                                                               family_filter);
+    family_filter = cangjie_context_get_char_family_filter_or (self, "zhuyin",
+                                                               family_filter);
+    family_filter = cangjie_context_get_char_family_filter_or (self, "kanji",
+                                                               family_filter);
+    family_filter = cangjie_context_get_char_family_filter_or (self, "hiragana",
+                                                               family_filter);
+    family_filter = cangjie_context_get_char_family_filter_or (self, "katakana",
+                                                               family_filter);
+    family_filter = cangjie_context_get_char_family_filter_or (self, "punctuation",
+                                                               family_filter);
+    family_filter = cangjie_context_get_char_family_filter_or (self, "symbol",
+                                                               family_filter);
+
+    /* The whole filter */
+    self->priv->filter = gom_filter_new_and (v_and_o_filter, family_filter);
+    g_object_unref (v_and_o_filter);
+    g_object_unref (family_filter);
 }
 
 static void
@@ -155,6 +220,7 @@ cangjie_context_set_property (GObject      *object,
 
         case PROP_CHAR_FAMILIES:
             self->priv->char_families = g_value_get_flags (value);
+            cangjie_context_reset_filter (self);
             break;
 
         default:

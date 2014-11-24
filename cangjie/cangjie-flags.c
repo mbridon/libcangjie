@@ -27,6 +27,10 @@ cangjie_char_family_flags_get_type (void)
 
   if (g_once_init_enter (&g_define_type_id__volatile))
     {
+      /* These correspond to the boolean properties of a CangjieChar
+       *
+       * The 'nick' must be named like these properties!
+       */
       static const GFlagsValue values[] = {
         { CANGJIE_CHAR_FAMILY_ALL, "CANGJIE_CHAR_FAMILY_ALL", "all" },
         { CANGJIE_CHAR_FAMILY_CHINESE, "CANGJIE_CHAR_FAMILY_CHINESE", "zh" },
