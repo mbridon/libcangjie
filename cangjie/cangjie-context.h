@@ -26,6 +26,7 @@
 
 #include <glib-object.h>
 #include "cangjie-enums.h"
+#include "cangjie-flags.h"
 
 G_BEGIN_DECLS
 
@@ -53,7 +54,9 @@ struct _CangjieContextClass
 };
 
 GType            cangjie_context_get_type                    (void);
-CangjieContext  *cangjie_context_new                         ();
+CangjieContext  *cangjie_context_new                         (CangjieVersion     version,
+                                                              CangjieOrientation orientation,
+                                                              guint32            type_flags);
 
 G_END_DECLS
 
