@@ -25,6 +25,8 @@
 #endif
 
 #include <glib-object.h>
+#include <gom/gom.h>
+#include "cangjie-char.h"
 #include "cangjie-enums.h"
 #include "cangjie-flags.h"
 

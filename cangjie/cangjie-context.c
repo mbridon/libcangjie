@@ -24,6 +24,9 @@ struct _CangjieContextPrivate
     CangjieOrientation orientation;
     CangjieVersion version;
     guint32 char_families;
+
+    /* Internal-only */
+    GomFilter *filter;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (CangjieContext, cangjie_context, G_TYPE_OBJECT)
@@ -56,9 +59,25 @@ cangjie_context_finalize (GObject *object)
 {
     CangjieContextPrivate *priv = CANGJIE_CONTEXT (object)->priv;
 
-    /* TODO: Free all private resources */
+    g_object_unref (priv->filter);
 
     G_OBJECT_CLASS (cangjie_context_parent_class)->finalize (object);
+}
+
+void
+cangjie_context_reset_filter (CangjieContext *self)
+{
+    GValue value = { 0, };
+
+    if (self->priv->filter != NULL) {
+        g_object_unref (self->priv->filter);
+    }
+
+    /* Version filter */
+    g_value_init (&value, CANGJIE_TYPE_VERSION);
+    g_value_set_enum (&value, self->priv->version);
+    self->priv->filter = gom_filter_new_eq (CANGJIE_TYPE_CHAR, "version", &value);
+    g_value_unset (&value);
 }
 
 static void
@@ -101,6 +120,7 @@ cangjie_context_set_property (GObject      *object,
     {
         case PROP_VERSION:
             self->priv->version = g_value_get_enum (value);
+            cangjie_context_reset_filter (self);
             break;
 
         case PROP_ORIENTATION:
