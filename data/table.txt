@@ -8442,7 +8442,7 @@
 吠 吠 1 1 0 0 1 0 0 0 0 rik rik NA 22414
 吡 吡 1 0 1 0 1 0 0 0 0 rpp rpp NA 0
 吢 吢 1 0 0 0 1 0 0 0 0 pr pr,xpr NA 0
-吣 吣 1 0 1 0 1 0 0 0 0 rpx rp,xrp NA 0
+吣 吣 1 0 1 0 1 0 0 0 0 rp,rpx rp,xrp NA 0
 吤 吤 1 1 0 0 1 0 0 0 0 roll roll NA 14106
 吥 吥 1 1 0 0 1 0 0 0 0 rmf rmf NA 14146
 否 否 1 1 0 0 1 0 0 0 0 mfr mfr NA 22431
@@ -8998,7 +8998,7 @@
 噌 噌 1 1 0 0 1 0 0 0 0 rcwa rcwa NA 7367
 噍 噍 1 0 1 0 1 0 0 0 0 rogf rogf NA 0
 噎 噎 1 1 0 0 1 0 0 0 0 rgbt rgbt NA 17071
-噏 噏 1 0 1 0 1 0 0 0 0 romm rorm NA 0
+噏 噏 1 0 1 0 1 0 0 0 0 romm,rory rorm NA 0
 噐 噐 1 0 1 0 1 0 0 0 0 rrmrr rrmrr NA 0
 噑 噑 1 0 0 0 1 0 0 0 0 rhaj rhaj,xrhaj NA 0
 噒 噒 1 0 1 0 1 0 0 0 0 rfdq rfdq NA 0
@@ -11084,7 +11084,7 @@
 干 干 1 1 0 0 1 0 0 0 0 mj mj NA 23172
 平 平 1 1 0 0 1 0 0 0 0 mfj mfj NA 22865
 年 年 1 1 0 0 1 0 0 0 0 oq oq NA 22656
-幵 幵 1 1 0 0 1 0 0 0 0 mjmj mjmj NA 14308
+幵 幵 1 1 0 0 1 0 0 0 0 mt,mjmj mjmj NA 14308
 并 并 1 1 0 0 1 0 0 0 0 tt tt,xtt NA 22657
 幷 并 1 0 0 0 1 0 0 0 0 hjhmj yjyj NA 0
 幸 幸 1 1 0 0 1 0 0 0 0 gtj gtj NA 21839
@@ -13194,7 +13194,7 @@
 暰 暰 1 1 0 0 1 0 0 0 0 ahoo ahoo NA 7163
 暱 暱 1 1 0 0 1 0 0 0 0 astr astr NA 16948
 暲 暲 1 1 0 0 1 0 0 0 0 aytj aytj NA 7161
-暳 暳 1 0 1 0 1 0 0 0 0 aqjs aqjm,aqjs NA 0
+暳 暳 1 0 1 0 1 0 0 0 0 aqjm,aqjs aqjm,aqjs NA 0
 暴 暴 1 1 0 0 1 0 0 0 0 atce atce NA 16949
 暵 暵 1 1 0 0 1 0 0 0 0 atlo atlo NA 7164
 暶 暶 1 0 1 0 1 0 0 0 0 ayso ayso NA 0
@@ -18478,7 +18478,7 @@
 筎 筎 1 1 0 0 1 0 0 0 0 hvr hvr NA 9948
 筏 筏 1 1 0 0 1 0 0 0 0 hoi hoi NA 18769
 筐 筐 1 1 0 0 1 0 0 0 0 hsmg hsmg NA 18774
-筑 筑 1 1 0 0 1 0 0 0 0 hmhn hmhn NA 18768
+筑 筑 1 1 0 0 1 0 0 0 0 hmnj,hmhn hmhn NA 18768
 筒 筒 1 1 0 0 1 0 0 0 0 hbmr hbmr NA 18773
 筓 筓 1 0 0 0 1 0 0 0 0 hmjj hmjj NA 0
 答 答 1 1 0 0 1 0 0 0 0 homr homr NA 18772
@@ -18746,7 +18746,7 @@
 籚 籚 1 1 0 0 1 0 0 0 0 hypt hypt NA 2753
 籛 篯 1 1 0 0 1 0 0 0 0 hcii hcii NA 2754
 籜 箨 1 1 0 0 1 0 0 0 0 hqwj hqwj NA 2756
-籝 籝 1 0 1 0 1 0 0 0 0 hyrn hynv NA 0
+籝 籝 1 0 1 0 1 0 0 0 0 hynv,hyrn hynv NA 0
 籞 籞 1 0 0 0 1 0 0 0 0 hhlf hhlf NA 0
 籟 籁 1 1 0 0 1 0 0 0 0 hdlc hdlc NA 14683
 籠 笼 1 1 0 0 1 0 0 0 0 hybp hybp NA 14684
@@ -24613,7 +24613,7 @@
 鍅 鍅 1 0 1 0 1 0 0 0 0 cegi cegi NA 0
 鍆 钔 1 1 0 0 1 0 0 0 0 can can NA 5589
 鍇 锴 1 1 0 0 1 0 0 0 0 cppa cppa NA 4845
-鍈 锳 1 0 1 0 1 0 0 0 0 ctlk ctlk NA 0
+鍈 锳 1 0 1 0 1 0 0 0 0 ctlk,ctkb ctlk NA 0
 鍉 鍉 1 1 0 0 1 0 0 0 0 camo camo NA 4840
 鍊 鍊 1 1 0 0 1 0 0 0 0 cdwf cdwf NA 15641
 鍋 锅 1 1 0 0 1 0 0 0 0 cbbr cbbr NA 15639
