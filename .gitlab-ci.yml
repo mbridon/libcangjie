@@ -1,0 +1,36 @@
+variables:
+  BUILD_IMAGE_REGISTRY: registry.freedesktop.org/cangjie/build-essential
+
+stages:
+  - test
+
+.test:
+  stage: test
+  script:
+    - ./autogen.sh
+    - make
+    - make distcheck
+  artifacts:
+    paths:
+      - libcangjie-*.tar.xz
+    expire_in: "1 week"
+
+test:fedora:rawhide:
+  extends: .test
+  image: "${BUILD_IMAGE_REGISTRY}/x86_64/fedora:rawhide"
+
+test:fedora:latest:
+  extends: .test
+  image: "${BUILD_IMAGE_REGISTRY}/x86_64/fedora:latest"
+
+test:ubuntu:devel:
+  extends: .test
+  image: "${BUILD_IMAGE_REGISTRY}/x86_64/ubuntu:devel"
+
+test:ubuntu:latest:
+  extends: .test
+  image: "${BUILD_IMAGE_REGISTRY}/x86_64/ubuntu:latest"
+
+test:ubuntu:lts:
+  extends: .test
+  image: "${BUILD_IMAGE_REGISTRY}/x86_64/ubuntu:lts"
