@@ -1,5 +1,5 @@
-ARG OS
-FROM cangjians/build-essential:${OS}
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 MAINTAINER Cangjians (https://cangjians.github.io)
 
 # basic environment for building

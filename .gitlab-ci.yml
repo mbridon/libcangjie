@@ -1,0 +1,89 @@
+variables:
+  BUILD_IMAGE_REGISTRY: registry.freedesktop.org/cangjie/build-essential
+
+stages:
+  - test
+  - publish_images
+
+.test:
+  stage: test
+  script:
+    - ./autogen.sh
+    - make
+    - make distcheck
+  artifacts:
+    paths:
+      - libcangjie-*.tar.xz
+    expire_in: "1 week"
+
+test:fedora:rawhide:
+  extends: .test
+  image: "${BUILD_IMAGE_REGISTRY}/x86_64/fedora:rawhide"
+
+test:fedora:latest:
+  extends: .test
+  image: "${BUILD_IMAGE_REGISTRY}/x86_64/fedora:latest"
+
+test:ubuntu:devel:
+  extends: .test
+  image: "${BUILD_IMAGE_REGISTRY}/x86_64/ubuntu:devel"
+
+test:ubuntu:latest:
+  extends: .test
+  image: "${BUILD_IMAGE_REGISTRY}/x86_64/ubuntu:latest"
+
+test:ubuntu:lts:
+  extends: .test
+  image: "${BUILD_IMAGE_REGISTRY}/x86_64/ubuntu:lts"
+
+.publish_images:
+  stage: publish_images
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2  # This apparently has better performance with dind
+  before_script:
+    - export BASE_IMAGE=${BUILD_IMAGE_REGISTRY}/${ARCH}/${DISTRO_NAME}:${DISTRO_VERSION}
+    - export IMAGE=${CI_REGISTRY_IMAGE}/${ARCH}/${DISTRO_NAME}:${DISTRO_VERSION}
+  script:
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker build --build-arg BASE_IMAGE=${BASE_IMAGE} --pull -f Dockerfile -t ${IMAGE} .
+    - docker push ${IMAGE}
+  only:
+    - master
+
+publish:fedora:rawhide:
+  extends: ".publish_images"
+  variables:
+    ARCH: "x86_64"
+    DISTRO_NAME: "fedora"
+    DISTRO_VERSION: "rawhide"
+
+publish:fedora:latest:
+  extends: ".publish_images"
+  variables:
+    ARCH: "x86_64"
+    DISTRO_NAME: "fedora"
+    DISTRO_VERSION: "latest"
+
+publish:ubuntu:devel:
+  extends: ".publish_images"
+  variables:
+    ARCH: "x86_64"
+    DISTRO_NAME: "ubuntu"
+    DISTRO_VERSION: "devel"
+
+publish:ubuntu:latest:
+  extends: ".publish_images"
+  variables:
+    ARCH: "x86_64"
+    DISTRO_NAME: "ubuntu"
+    DISTRO_VERSION: "latest"
+
+publish:ubuntu:lts:
+  extends: ".publish_images"
+  variables:
+    ARCH: "x86_64"
+    DISTRO_NAME: "ubuntu"
+    DISTRO_VERSION: "lts"
