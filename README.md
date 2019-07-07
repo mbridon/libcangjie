@@ -1,7 +1,5 @@
 # libcangjie
 
-[license-url]: http://www.gnu.org/licenses/lgpl.html
-
 This is a C library implementing the Cangjie input method.
 
 Below is a trivial example of how to use it:
@@ -74,8 +72,8 @@ Thank you very much Wan Leung!
 
 ## Legalities
 
-libcangjie is offered under the terms of the
-[GNU Lesser General Public License, either version 3 or any later version][license-url].
+This project is offered under the terms of the
+[GNU Lesser General Public License, version 3 or any later version][lgpl], see
+the [COPYING](COPYING) file for details.
 
-We won't ask you to sign a copyright assignment or any other kind of silly and
-tedious legal document, so just send us patches and/or pull requests!
+[lgpl]: http://www.gnu.org/licenses/lgpl.html
