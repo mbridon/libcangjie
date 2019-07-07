@@ -1,10 +1,7 @@
 # libcangjie
 
-[![travis-shield]][travis-url]
 [![license-shield]][license-url]
 
-[travis-url]: https://travis-ci.org/Cangjians/libcangjie
-[travis-shield]: https://api.travis-ci.org/Cangjians/libcangjie.svg?branch=master
 [license-url]: http://www.gnu.org/licenses/lgpl.html
 [license-shield]: https://img.shields.io/github/license/cangjians/libcangjie.svg
 
