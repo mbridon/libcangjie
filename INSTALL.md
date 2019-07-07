@@ -92,7 +92,7 @@ $ sudo make install
 First, you need to clone the development repository:
 
 ```
-$ git clone git://github.com/Cangjians/libcangjie
+$ git clone https://gitlab.freedesktop.org/cangjie/libcangjie.git
 ```
 
 Then, from the root folder of the Git clone, do the usual Autotools dance:
