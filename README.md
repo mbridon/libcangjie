@@ -1,9 +1,6 @@
 # libcangjie
 
-[![license-shield]][license-url]
-
 [license-url]: http://www.gnu.org/licenses/lgpl.html
-[license-shield]: https://img.shields.io/github/license/cangjians/libcangjie.svg
 
 This is a C library implementing the Cangjie input method.
 
